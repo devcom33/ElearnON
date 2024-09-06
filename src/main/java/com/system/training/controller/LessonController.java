@@ -50,6 +50,10 @@ public class LessonController {
 		
 		return ResponseEntity.created(location).body(savedLesson);
 	}
+	@PostMapping("/update-lesson")
+	public ResponseEntity<Void> updateLesson(@RequestBody LessonRequest lessonRequest) {
+		return ResponseEntity.ok().build();
+	}
 	@GetMapping
 	public List<Lesson> getAllLessons(){
 		return lessonService.getLessons();

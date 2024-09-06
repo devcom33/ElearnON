@@ -30,5 +30,9 @@ public class LessonService {
 	public List<Lesson> getLessons(){
 		return lessonRepository.findAll();
 	}
+	
+	public void updateLesson(Lesson lesson) {
+		lessonRepository.save(lesson);
+	}
 
 }
