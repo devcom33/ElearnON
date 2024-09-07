@@ -4,7 +4,9 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.system.training.DTO.LessonRequest;
 import com.system.training.exception.CourseNotFoundException;
+import com.system.training.exception.LessonNotFoundException;
 import com.system.training.model.Course;
 import com.system.training.model.Lesson;
 import com.system.training.service.CourseService;
@@ -50,13 +53,38 @@ public class LessonController {
 		
 		return ResponseEntity.created(location).body(savedLesson);
 	}
-	@PostMapping("/update-lesson")
-	public ResponseEntity<Void> updateLesson(@RequestBody LessonRequest lessonRequest) {
-		return ResponseEntity.ok().build();
-	}
 	@GetMapping
-	public List<Lesson> getAllLessons(){
-		return lessonService.getLessons();
+	public ResponseEntity<List<Lesson>> getAllLessons(){
+		List<Lesson> lessons = lessonService.getLessons();
+		
+		if (lessons.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(lessons);
 	}
-	
+	@GetMapping("/{id}")
+	public ResponseEntity<Lesson> getLessonById(@PathVariable Long id) throws LessonNotFoundException{
+		Lesson lesson = lessonService.getLessonById(id);
+
+		if (lesson == null){
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(lesson);
+	}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteLesson(@PathVariable Long id) {
+	    Lesson existingLesson;
+		try {
+			existingLesson = lessonService.getLessonById(id);
+		    if (existingLesson == null) {
+		        return ResponseEntity.notFound().build();
+		    }
+		    lessonService.deleteLessonById(id);
+
+		} catch (LessonNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return ResponseEntity.noContent().build();
+	}
 }

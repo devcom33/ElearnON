@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.system.training.exception.LessonNotFoundException;
+import com.system.training.model.Course;
 import com.system.training.model.Lesson;
 import com.system.training.repository.LessonRepository;
 
@@ -31,8 +33,14 @@ public class LessonService {
 		return lessonRepository.findAll();
 	}
 	
-	public void updateLesson(Lesson lesson) {
-		lessonRepository.save(lesson);
+	public Lesson getLessonById(Long id) throws LessonNotFoundException{
+		return lessonRepository.findById(id).orElseThrow(()-> new LessonNotFoundException("Lesson Not Found"));
 	}
-
+	
+	public Lesson getLessonByLessonNumber(Course course, Integer lessonNumber) {
+		return lessonRepository.findByCourseAndLessonNumber(course, lessonNumber);
+	}
+	public void deleteLessonById(Long id) {
+		lessonRepository.deleteById(id);
+	}
 }

@@ -1,5 +1,8 @@
 package com.system.training.model;
 
+//import java.time.LocalDateTime;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,11 +19,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Progress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    
     @Column(nullable = false)
     private Double completionProgress; // Percentage of completion (e.g., 75.0 for 75%)
 
@@ -35,5 +40,5 @@ public class Progress {
     @ManyToOne
     @JoinColumn(name = "lesson_id", nullable = false)
     private Lesson lesson;
-
+    
 }

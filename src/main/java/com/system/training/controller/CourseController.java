@@ -58,7 +58,6 @@ public class CourseController {
         }
     }
 
-    // Update an existing course
     /*@PutMapping("/{id}")
     public ResponseEntity<Course> updateCourse(@PathVariable Long id, @RequestBody Course course) {
         // Check if the course exists

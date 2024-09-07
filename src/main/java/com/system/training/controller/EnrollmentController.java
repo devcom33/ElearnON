@@ -25,9 +25,12 @@ import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Course;
 import com.system.training.model.Enrollement;
 import com.system.training.model.EnrollmentState;
+import com.system.training.model.Progress;
 import com.system.training.model.Student;
 import com.system.training.service.CourseService;
 import com.system.training.service.EnrollmentService;
+import com.system.training.service.LessonService;
+import com.system.training.service.ProgressService;
 import com.system.training.service.StudentService;
 
 import jakarta.validation.Valid;
@@ -45,6 +48,12 @@ public class EnrollmentController {
 	
 	@Autowired
 	public CourseService courseService;
+	
+	@Autowired
+	public ProgressService progressService;
+	
+	@Autowired
+	public LessonService lessonService;
 	
 	
 	@PostMapping
@@ -71,7 +80,12 @@ public class EnrollmentController {
 	        if (savedEnroll == null) {
 	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	        }
-
+	        Progress progress = new Progress();
+	        progress.setCompletionProgress(0.0);
+	        progress.setCourse(course);
+	        progress.setStudent(student);
+	        progress.setLesson(lessonService.getLessonByLessonNumber(course, 1));
+	        progressService.saveProgress(progress);
 	        URI location = ServletUriComponentsBuilder
 	                .fromCurrentRequest()
 	                .path("/{id}")
