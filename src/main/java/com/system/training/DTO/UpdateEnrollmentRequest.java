@@ -1,6 +1,6 @@
 package com.system.training.DTO;
 
-import com.system.training.model.EnrollmentState;
+import com.system.training.enums.EnrollmentState;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

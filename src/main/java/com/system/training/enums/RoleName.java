@@ -1,4 +1,4 @@
-package com.system.training.model;
+package com.system.training.enums;
 
 public enum RoleName {
     ROLE_ADMIN,

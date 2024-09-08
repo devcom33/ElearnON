@@ -1,5 +1,8 @@
 package com.system.training.controller;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +23,18 @@ import com.system.training.service.StudentService;
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     @Autowired
     private StudentService studentService;
 
     @GetMapping
     public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    	long startTime = System.currentTimeMillis();
+    	List<Student> students = studentService.getAllStudents();
+        long endTime = System.currentTimeMillis();
+        logger.info("getAllStudents executed in {} ms", (endTime - startTime));
+        
+        return students;
     }
 
    @GetMapping("/{id}")

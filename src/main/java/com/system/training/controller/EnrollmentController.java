@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.system.training.DTO.EnrollmentRequest;
 import com.system.training.DTO.UpdateEnrollmentRequest;
+import com.system.training.enums.EnrollmentState;
 import com.system.training.exception.CourseNotFoundException;
 import com.system.training.exception.EnrollmentAlreadyExistsException;
 import com.system.training.exception.EnrollmentNotFoundException;
@@ -24,7 +25,6 @@ import com.system.training.exception.InvalidStateTransitionException;
 import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Course;
 import com.system.training.model.Enrollement;
-import com.system.training.model.EnrollmentState;
 import com.system.training.model.Progress;
 import com.system.training.model.Student;
 import com.system.training.service.CourseService;

@@ -40,7 +40,12 @@ public class LessonService {
 	public Lesson getLessonByLessonNumber(Course course, Integer lessonNumber) {
 		return lessonRepository.findByCourseAndLessonNumber(course, lessonNumber);
 	}
+	
 	public void deleteLessonById(Long id) {
 		lessonRepository.deleteById(id);
+	}
+	
+	public Long countByCourse(Course course) {
+		return lessonRepository.countByCourse(course);
 	}
 }

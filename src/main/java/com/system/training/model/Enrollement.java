@@ -2,6 +2,7 @@ package com.system.training.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.system.training.enums.EnrollmentState;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

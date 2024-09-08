@@ -7,10 +7,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.system.training.enums.EnrollmentState;
 import com.system.training.exception.EnrollmentNotFoundException;
 import com.system.training.exception.InvalidStateTransitionException;
 import com.system.training.model.Enrollement;
-import com.system.training.model.EnrollmentState;
 import com.system.training.repository.EnrollmentRepository;
 
 

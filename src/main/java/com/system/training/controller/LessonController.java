@@ -82,7 +82,6 @@ public class LessonController {
 		    lessonService.deleteLessonById(id);
 
 		} catch (LessonNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    return ResponseEntity.noContent().build();

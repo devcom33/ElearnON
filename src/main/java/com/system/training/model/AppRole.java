@@ -1,5 +1,7 @@
 package com.system.training.model;
 
+import com.system.training.enums.RoleName;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

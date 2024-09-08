@@ -1,5 +1,7 @@
 package com.system.training.model;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
@@ -19,8 +21,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Table(name = "student")
-public class Student {
-    @Id
+public class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
