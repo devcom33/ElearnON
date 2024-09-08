@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.system.training.exception.CourseNotFoundException;
 import com.system.training.exception.LessonNotFoundException;
 import com.system.training.model.Course;
 import com.system.training.model.Lesson;
@@ -15,6 +17,8 @@ import com.system.training.repository.LessonRepository;
 public class LessonService {
 	private static final Logger logger = LoggerFactory.getLogger(LessonService.class);
 	public final LessonRepository lessonRepository;
+	@Autowired
+	public CourseService courseService;
 	
 	public LessonService(LessonRepository lessonRepository) {
 		this.lessonRepository = lessonRepository;
@@ -45,7 +49,8 @@ public class LessonService {
 		lessonRepository.deleteById(id);
 	}
 	
-	public Long countByCourse(Long courseId) {
-		return lessonRepository.countByCourse(courseId);
+	public Long countByCourse(Long courseId) throws CourseNotFoundException {
+		Course course = courseService.getCourseById(courseId);
+		return lessonRepository.countByCourse(course);
 	}
 }

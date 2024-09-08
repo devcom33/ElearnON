@@ -11,6 +11,6 @@ import com.system.training.model.LessonCompletion;
 @Repository
 public interface LessonCompletionRepository extends JpaRepository<LessonCompletion, Long>{
 	
-	@Query("SELECT COUNT(lc) FROM LessonCompletion lc where lc.lesson.course.id := courseId AND lc.student.id := studentId AND completed := True")
-	long countbyCompleted(@Param("courseId") long courseId, @Param("studentId") long studentId);
+    @Query("SELECT COUNT(lc) FROM LessonCompletion lc WHERE lc.lesson.course.id = :courseId AND lc.student.id = :studentId AND lc.completed = true")
+    Long countbyCompleted(@Param("courseId") Long courseId, @Param("studentId") Long studentId);
 }

@@ -5,28 +5,30 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.system.training.exception.CourseNotFoundException;
+import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Course;
+import com.system.training.model.Lesson;
 import com.system.training.model.Progress;
+import com.system.training.model.Student;
 import com.system.training.repository.LessonCompletionRepository;
 import com.system.training.repository.ProgressRepository;
 
 
 @Service
 public class ProgressService {
-	
-	public final ProgressRepository progressRepository;
+	@Autowired
+	public ProgressRepository progressRepository;
+	@Autowired
 	public LessonService lessonSevice;
-	public LessonService lessonService;
-	public ProgressService progressService;
+	@Autowired
 	public LessonCompletionService lessonCompletionService;
+	@Autowired
+	public StudentService studentService;
+	@Autowired
+	public CourseService courseService;
 	
-	
-	
-	public ProgressService(ProgressRepository progressRepository, LessonService lessonSevice) {
-		this.progressRepository = progressRepository;
-		this.lessonSevice = lessonSevice;
-	}
-	
+
 	public Progress saveProgress(Progress progress) {
 		return progressRepository.save(progress);
 	}
@@ -50,9 +52,11 @@ public class ProgressService {
 	    
 	    return (double) completedLessons / totalLessons * 100;
 	}
-	public void updateProgressAfterLessonCompletion(Long studentId, Long courseId) {
+	public void updateProgressAfterLessonCompletion(Long studentId, Long courseId) throws CourseNotFoundException, StudentNotFoundException {
 	    Double progress = calculateProgress(courseId, studentId);
-	    Progress progressRecord = progressRepository.findByStudentAndCourse(studentId, courseId);
+		Course course = courseService.getCourseById(courseId);
+		Student student = studentService.getStudentById(studentId);
+	    Progress progressRecord = progressRepository.findByStudentAndCourse(student, course);
 	    progressRecord.setCompletionProgress(progress);
 	    progressRepository.save(progressRecord);
 	}

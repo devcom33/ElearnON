@@ -17,7 +17,9 @@ public class LessonCompletionService {
 	
 	@Autowired
 	public LessonCompletionRepository lcRepository;
+	@Autowired
 	public LessonService lessonService;
+	@Autowired
 	public StudentService studentService;
 
 	public Long countCompletedLessons(Long courseId, Long studentId){
@@ -31,7 +33,7 @@ public class LessonCompletionService {
 		LessonCompletion lessonCompletion = new LessonCompletion();
 		
 		Lesson lesson = lessonService.getLessonById(lessonId);
-		Student student = studentService.getStudentById(lessonId);
+		Student student = studentService.getStudentById(studentId);
 		
 		lessonCompletion.setLesson(lesson);
 		lessonCompletion.setStudent(student);
