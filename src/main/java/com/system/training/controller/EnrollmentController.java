@@ -84,7 +84,6 @@ public class EnrollmentController {
 	        progress.setCompletionProgress(0.0);
 	        progress.setCourse(course);
 	        progress.setStudent(student);
-	        progress.setLesson(lessonService.getLessonByLessonNumber(course, 1));
 	        progressService.saveProgress(progress);
 	        URI location = ServletUriComponentsBuilder
 	                .fromCurrentRequest()
