@@ -1,10 +1,10 @@
 package com.system.training.controller;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Student;
+import com.system.training.service.ProgressService;
 import com.system.training.service.StudentService;
 
 
@@ -26,6 +27,8 @@ public class StudentController {
     private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private ProgressService progressService;
 
     @GetMapping
     public List<Student> getAllStudents() {
@@ -53,5 +56,13 @@ public class StudentController {
     public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
     }
+    
+    @GetMapping("/students/{studentId}/courses/{courseId}/progress")
+    public ResponseEntity<Double> getCourseProgress(
+          @PathVariable Long studentId, @PathVariable Long courseId) {
+        Double progress = progressService.calculateProgress(courseId, studentId);
+        return ResponseEntity.ok(progress);
+    }
+
 }
 

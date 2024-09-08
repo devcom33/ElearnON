@@ -7,6 +7,7 @@ import com.system.training.exception.LessonNotFoundException;
 import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Lesson;
 import com.system.training.model.LessonCompletion;
+import com.system.training.model.Progress;
 import com.system.training.model.Student;
 import com.system.training.repository.LessonCompletionRepository;
 
@@ -38,4 +39,6 @@ public class LessonCompletionService {
 		
 		lcRepository.save(lessonCompletion);
 	}
+
+
 }

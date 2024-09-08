@@ -50,5 +50,12 @@ public class ProgressService {
 	    
 	    return (double) completedLessons / totalLessons * 100;
 	}
+	public void updateProgressAfterLessonCompletion(Long studentId, Long courseId) {
+	    Double progress = calculateProgress(courseId, studentId);
+	    Progress progressRecord = progressRepository.findByStudentAndCourse(studentId, courseId);
+	    progressRecord.setCompletionProgress(progress);
+	    progressRepository.save(progressRecord);
+	}
+
 
 }
