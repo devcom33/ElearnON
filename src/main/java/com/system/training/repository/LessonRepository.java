@@ -10,5 +10,5 @@ import com.system.training.model.Lesson;
 public interface LessonRepository extends JpaRepository<Lesson, Long>{
 	boolean existsByTitle(String title);
 	Lesson findByCourseAndLessonNumber(Course course, Integer lessonNumber);
-	long countByCourse(Course course);
+	long countByCourse(Long course_id);
 }

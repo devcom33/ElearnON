@@ -45,7 +45,7 @@ public class LessonService {
 		lessonRepository.deleteById(id);
 	}
 	
-	public Long countByCourse(Course course) {
-		return lessonRepository.countByCourse(course);
+	public Long countByCourse(Long courseId) {
+		return lessonRepository.countByCourse(courseId);
 	}
 }
