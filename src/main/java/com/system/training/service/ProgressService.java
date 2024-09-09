@@ -40,13 +40,14 @@ public class ProgressService {
 	public Progress getProgressById(Long id) {
 		return progressRepository.findById(id).orElse(null);
 	}
+
 	/*
-	public void updateProgress(Long progressId, Course course) {
-		Long countLessons = lessonSevice.countByCourse(course);
-		Long percentByCourse = 100 / countLessons;
-	}*/
+	 * calculateProgress - a method for calculate progress by nums of Lessons & completed lessons
+	 * Return: progress of a course By student
+	 */
 	
-	public Double calculateProgress(Long courseId, Long studentId) {
+	public Double calculateProgress(Long courseId, Long studentId) throws CourseNotFoundException {
+	
 	    Long totalLessons = lessonSevice.countByCourse(courseId);
 	    Long completedLessons = lessonCompletionService.countCompletedLessons(courseId, studentId);
 	    
