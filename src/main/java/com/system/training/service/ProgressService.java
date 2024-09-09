@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 import com.system.training.exception.CourseNotFoundException;
 import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Course;
-import com.system.training.model.Lesson;
 import com.system.training.model.Progress;
 import com.system.training.model.Student;
-import com.system.training.repository.LessonCompletionRepository;
 import com.system.training.repository.ProgressRepository;
 
 
@@ -53,6 +51,9 @@ public class ProgressService {
 	    
 	    return (double) completedLessons / totalLessons * 100;
 	}
+	/*
+	 * updateProgressAfterLessonCompletion - A method To mark a Lesson As Complete
+	 */
 	public void updateProgressAfterLessonCompletion(Long studentId, Long courseId) throws CourseNotFoundException, StudentNotFoundException {
 	    Double progress = calculateProgress(courseId, studentId);
 		Course course = courseService.getCourseById(courseId);
