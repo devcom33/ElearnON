@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.system.training.exception.CourseNotFoundException;
 import com.system.training.exception.StudentNotFoundException;
@@ -54,6 +55,7 @@ public class ProgressService {
 	/*
 	 * updateProgressAfterLessonCompletion - A method To mark a Lesson As Complete
 	 */
+	@Transactional
 	public void updateProgressAfterLessonCompletion(Long studentId, Long courseId) throws CourseNotFoundException, StudentNotFoundException {
 	    Double progress = calculateProgress(courseId, studentId);
 		Course course = courseService.getCourseById(courseId);

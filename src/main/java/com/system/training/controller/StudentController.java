@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.system.training.exception.CourseNotFoundException;
 import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Student;
 import com.system.training.service.ProgressService;
@@ -57,9 +58,9 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
     
-    @GetMapping("/students/{studentId}/courses/{courseId}/progress")
+    @GetMapping("/{studentId}/courses/{courseId}/progress")
     public ResponseEntity<Double> getCourseProgress(
-          @PathVariable Long studentId, @PathVariable Long courseId) {
+          @PathVariable Long studentId, @PathVariable Long courseId) throws CourseNotFoundException {
         Double progress = progressService.calculateProgress(courseId, studentId);
         return ResponseEntity.ok(progress);
     }

@@ -1,20 +1,22 @@
 package com.system.training.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.system.training.exception.LessonNotFoundException;
 import com.system.training.exception.StudentNotFoundException;
 import com.system.training.model.Lesson;
 import com.system.training.model.LessonCompletion;
-import com.system.training.model.Progress;
 import com.system.training.model.Student;
 import com.system.training.repository.LessonCompletionRepository;
 
 
 @Service
 public class LessonCompletionService {
-	
+	private static final Logger logger = LoggerFactory.getLogger(LessonCompletionService.class);
 	@Autowired
 	public LessonCompletionRepository lcRepository;
 	@Autowired
@@ -28,7 +30,10 @@ public class LessonCompletionService {
 	
 	/*
 	 * markLessonAsComplete - A function To mark the lesson as completed
+	 * Limits:
+	 * this method need to verify is enrolled by student or not
 	 */
+	@Transactional
 	public void markLessonAsComplete(Long studentId, Long lessonId) throws LessonNotFoundException, StudentNotFoundException {
 		LessonCompletion lessonCompletion = new LessonCompletion();
 		
@@ -38,7 +43,7 @@ public class LessonCompletionService {
 		lessonCompletion.setLesson(lesson);
 		lessonCompletion.setStudent(student);
 		lessonCompletion.setCompleted(true);
-		
+		logger.info("[+] Completion Lesson {}  Student {}",lesson, student);
 		lcRepository.save(lessonCompletion);
 	}
 
