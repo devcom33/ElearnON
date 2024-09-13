@@ -3,11 +3,9 @@ package com.system.training.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.system.training.model.AppRole;
-
-
+import com.system.training.model.AppUser;
 
 @Repository
-public interface AppRoleRepository extends JpaRepository<AppRole, Long>{
-	AppRole findByName(AppRole name);
+public interface UserRepository extends JpaRepository<AppUser, Long> {
+	AppUser findByUsername(String username);
 }

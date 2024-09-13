@@ -45,12 +45,12 @@ public class StudentController {
     public Student getStudentById(@PathVariable Long id) throws StudentNotFoundException {
         return studentService.getStudentById(id);
     }
-
+   	/*
     @PostMapping("/register")
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         Student savedStudent = studentService.registerStudent(student);
         return ResponseEntity.ok(savedStudent);
-    }
+    }*/
 
 
     @DeleteMapping("/{id}")

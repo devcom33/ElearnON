@@ -24,7 +24,7 @@ public class StudentService {
         this.passwordEncoder = passwordEncoder;
     }
     
-    
+    /*
     public Student registerStudent(Student student) {
         if (student.getPassword() != null && !student.getPassword().isEmpty()) {
             String encodedPassword = passwordEncoder.encode(student.getPassword());
@@ -34,7 +34,7 @@ public class StudentService {
         Student savedStudent = studentRepository.save(student);
         System.out.println("Saved student: " + savedStudent);
         return savedStudent;
-    }
+    }*/
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }

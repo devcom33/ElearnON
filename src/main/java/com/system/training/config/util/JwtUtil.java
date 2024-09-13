@@ -1,22 +1,33 @@
 package com.system.training.config.util;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
+import com.system.training.model.AppRole;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class JwtUtil {
 
-    private String secret = "your_secret_key";
+    public String secret = "HHHHH2020AAAA9829YZIHJDKLDJDUZIP829020220022203030939IEND";
 
-    public String generateToken(String username, String role) {
+    public String generateToken(String username, Set<AppRole> roles) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
+        
+        List<String> roleNames = roles.stream()
+                .map(AppRole::getAuthority) // Assuming AppRole implements GrantedAuthority
+                .collect(Collectors.toList());
+        
+        claims.put("roles", roleNames); // Add roles to the claims
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
