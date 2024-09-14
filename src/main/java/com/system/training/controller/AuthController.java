@@ -1,5 +1,7 @@
 package com.system.training.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import lombok.Data;
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
+	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     private AuthenticationManager authenticationManager;
 	@Autowired
@@ -43,36 +46,27 @@ public class AuthController {
         return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.CREATED);
 	}
 	
-	
 	@PostMapping
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception
 	{
+		logger.info("[-1] User Details: ");
 		try {
+			logger.info("[0] User Details: ");
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-			
+			logger.info("[1] User Details: ");
 		} catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}
-		
+		logger.info("[2] User Details: ");
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
-        System.out.println("User Details: "+ userDetails);
+        logger.info("User Details: "+ userDetails);
         AppUser appUser = userService.findUserByUsername(userDetails.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername(), appUser.getRoles());
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
     @Data

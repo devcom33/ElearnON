@@ -37,12 +37,10 @@ public class UserService implements UserDetailsService{
 		for (AppRole roleElement: roles) {
 			role.setId(roleElement.getId());
 			role.setName(roleElement.getName());
-			logger.error("complete[-1]");
+
 			if (appRoleRepository.findByName(role.getName()) != null) {
 				logger.error("complete[0]");
 				newRoles.add(role);
-				logger.error("complete[1]");
-
 			}
 			
 			logger.error("complete[2]");
