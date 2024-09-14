@@ -19,6 +19,7 @@ import com.system.training.config.util.JwtUtil;
 import com.system.training.model.AppUser;
 import com.system.training.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -38,7 +39,7 @@ public class AuthController {
 	
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody AppUser user){
+	public ResponseEntity<?> register(@RequestBody @Valid AppUser user){
         AppUser savedUser = userService.createUser(user);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(savedUser.getUsername());
         final String jwt = jwtUtil.generateToken(savedUser.getUsername(), savedUser.getRoles());

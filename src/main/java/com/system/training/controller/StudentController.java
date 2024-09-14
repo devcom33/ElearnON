@@ -30,13 +30,10 @@ public class StudentController {
     @Autowired
     private ProgressService progressService;
     
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     @GetMapping
     public List<Student> getAllStudents() {
-    	long startTime = System.currentTimeMillis();
     	List<Student> students = studentService.getAllStudents();
-        long endTime = System.currentTimeMillis();
-        logger.info("getAllStudents executed in {} ms", (endTime - startTime));
         
         return students;
     }

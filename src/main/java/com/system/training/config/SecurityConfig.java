@@ -22,7 +22,7 @@ import com.system.training.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)  
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig{
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;

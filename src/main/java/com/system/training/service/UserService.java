@@ -1,7 +1,11 @@
 package com.system.training.service;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.system.training.controller.EnrollmentController;
+import com.system.training.enums.RoleName;
 import com.system.training.model.AppRole;
 import com.system.training.model.AppUser;
 import com.system.training.repository.AppRoleRepository;
@@ -29,41 +34,42 @@ public class UserService implements UserDetailsService{
     public PasswordEncoder passwordEncoder;	
 	
 	public AppUser createUser(AppUser appUser) {
-		logger.info("AppUser "+ appUser.getRoles());
-		Set<AppRole> roles = appUser.getRoles();
-		AppRole role = new AppRole();
-		Set<AppRole> newRoles = new HashSet<AppRole>();
-		
-		for (AppRole roleElement: roles) {
-			role.setId(roleElement.getId());
-			role.setName(roleElement.getName());
 
-			if (appRoleRepository.findByName(role.getName()) != null) {
-				logger.error("complete[0]");
-				newRoles.add(role);
-			}
-			
-			logger.error("complete[2]");
-		}
-		logger.info(role.getAuthority());
-		appUser.setRoles(newRoles);
+		//Fetching existing roles from repo
+		List<AppRole> rolesFromDb = appRoleRepository.findAll();
+		Map<RoleName, AppRole> roleMap = rolesFromDb.stream()
+				.collect(Collectors.toMap(AppRole::getName, Function.identity()));
+		
+		Set<AppRole> roles = appUser.getRoles().stream()
+				.filter(role -> roleMap.containsKey(role.getName()))
+				.map(role -> roleMap.get(role.getName()))
+				.collect(Collectors.toSet());
+
+		appUser.setRoles(roles);
 		appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
 		return userRepository.save(appUser);
 	}
 	
-	public AppUser findUserByUsername(String username) {
+	public AppUser findUserByUsername(String username) throws UsernameNotFoundException{
 		return userRepository.findByUsername(username);
 	}
-	/*
+	
 	public void assignRoleToUser(String username, AppRole appRole) {
 		AppUser user = findUserByUsername(username);
-		AppRole role = appRoleRepository.findByName(appRole);
+		AppRole role = appRoleRepository.findByName(appRole.getName());
 		user.getRoles().add(role);
 		userRepository.save(user);
-	}*/
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userRepository.findByUsername(username);
+		AppUser user = userRepository.findByUsername(username);
+		
+		if (user != null) {
+			return user;
+		}
+		else {
+			throw new UsernameNotFoundException("User with Username : "+ username + " not found!");
+		}
 	}
 }
