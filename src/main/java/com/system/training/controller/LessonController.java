@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class LessonController {
 		this.courseService = courseService;
 	}
 	
+	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@PostMapping
 	public ResponseEntity<Lesson> createLesson(@Valid @RequestBody LessonRequest lesson) throws CourseNotFoundException{
 		

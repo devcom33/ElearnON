@@ -50,11 +50,8 @@ public class AuthController {
 	@PostMapping
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception
 	{
-		logger.info("[-1] User Details: ");
 		try {
-			logger.info("[0] User Details: ");
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-			logger.info("[1] User Details: ");
 		} catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}

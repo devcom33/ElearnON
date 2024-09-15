@@ -37,8 +37,9 @@ public class StudentController {
         
         return students;
     }
-
-   @GetMapping("/{id}")
+    
+    @PreAuthorize("hasRole('INSTRUCTOR')")
+    @GetMapping("/{id}")
     public Student getStudentById(@PathVariable Long id) throws StudentNotFoundException {
         return studentService.getStudentById(id);
     }
@@ -49,12 +50,13 @@ public class StudentController {
         return ResponseEntity.ok(savedStudent);
     }*/
 
-
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     @DeleteMapping("/{id}")
     public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
     }
     
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     @GetMapping("/{studentId}/courses/{courseId}/progress")
     public ResponseEntity<Double> getCourseProgress(
           @PathVariable Long studentId, @PathVariable Long courseId) throws CourseNotFoundException {

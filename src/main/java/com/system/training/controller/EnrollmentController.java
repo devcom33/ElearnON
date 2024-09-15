@@ -57,6 +57,7 @@ public class EnrollmentController {
 	public LessonService lessonService;
 	
 	
+	@PreAuthorize("hasRole('STUDENT')")
 	@PostMapping
 	public ResponseEntity<Enrollement> enroll(@Valid @RequestBody EnrollmentRequest enrollmentRequest) {
 	    try {
@@ -104,13 +105,14 @@ public class EnrollmentController {
 	    }
 	}
 	
-	@PreAuthorize("hasRole('ROLE_STUDENT')")
+	@PreAuthorize("hasRole('STUDENT')")
 	@GetMapping
 	public List<Enrollement> getAllEnrollments(){
 		List<Enrollement> enrolls = enrollementService.getAllEnrollments();
 		return enrolls;
 	}
 	
+	@PreAuthorize("hasRole('STUDENT')")
 	@PostMapping("/update-state")
 	public ResponseEntity<Void> updateEnrollmentState(@RequestBody UpdateEnrollmentRequest updateRequest){
         try {
