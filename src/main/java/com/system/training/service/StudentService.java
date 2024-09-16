@@ -15,26 +15,22 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class StudentService {
-    @Autowired
-    private StudentRepository studentRepository;
+
+	private StudentRepository studentRepository;
     
     private final PasswordEncoder passwordEncoder;
 
-    StudentService(PasswordEncoder passwordEncoder) {
+    StudentService(StudentRepository studentRepository, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+        this.studentRepository = studentRepository;
     }
     
-    /*
+    
     public Student registerStudent(Student student) {
-        if (student.getPassword() != null && !student.getPassword().isEmpty()) {
-            String encodedPassword = passwordEncoder.encode(student.getPassword());
-            student.setPassword(encodedPassword);
-        }
-        System.out.println("Student to be saved: " + student);
         Student savedStudent = studentRepository.save(student);
         System.out.println("Saved student: " + savedStudent);
         return savedStudent;
-    }*/
+    }
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
