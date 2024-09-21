@@ -20,17 +20,13 @@ public class InstructorService {
     InstructorService(PasswordEncoder passwordEncoder){
     	this.passwordEncoder = passwordEncoder;
     }
-    /*
+    
     public Instructor createInstructor(Instructor instructor) {
-        if (instructor.getPassword() != null && !instructor.getPassword().isEmpty()) {
-            String encodedPassword = passwordEncoder.encode(instructor.getPassword());
-            instructor.setPassword(encodedPassword);
-        }
         System.out.println("Instructor to be saved: " + instructor);
         Instructor savedInstructor = instructorRepository.save(instructor);
         System.out.println("Saved instructor: " + savedInstructor);
         return savedInstructor;
-    }*/
+    }
     
     public Instructor getInstructorById(Long id) {
     	return instructorRepository.findById(id).orElse(null);

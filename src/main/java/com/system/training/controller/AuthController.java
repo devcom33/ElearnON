@@ -48,7 +48,7 @@ public class AuthController {
         return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.CREATED);
 	}
 	@CrossOrigin(origins = "http://localhost:5173")
-	@PostMapping
+	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception
 	{
 		try {

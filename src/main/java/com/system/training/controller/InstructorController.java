@@ -35,13 +35,13 @@ public class InstructorController {
         return instructorService.getInstructorById(id);
     }
 	
-	/*
+	
 	@PostMapping("/register")
 	public ResponseEntity<Instructor> createInstructor(@RequestBody Instructor instructor)
 	{
 		Instructor savedInstructor = instructorService.createInstructor(instructor);
 		return ResponseEntity.ok(savedInstructor);
-	}*/
+	}
 	
 	
 	@DeleteMapping("/{id}")
