@@ -47,12 +47,12 @@ public class SecurityConfig{
 	@Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+        	.cors(cors -> cors.configurationSource(corsConfigurationSource())) 
+        	.csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(requests -> requests
             	.requestMatchers("/api/auth/**", "/api/role/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/instructor/**").hasRole("INSTRUCTOR")
                 .requestMatchers("/student/**").hasRole("STUDENT")
                 .anyRequest().authenticated())
             .authenticationProvider(authenticationProvider())
@@ -76,7 +76,17 @@ public class SecurityConfig{
 		return new BCryptPasswordEncoder();
 	}
     
-    
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // React app URL
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
     
     
 }

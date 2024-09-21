@@ -2,6 +2,8 @@ package com.system.training.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +24,7 @@ import com.system.training.service.InstructorService;
 @RestController
 @RequestMapping("/api/course")
 public class CourseController {
+    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @Autowired
     private CourseService courseService;
@@ -55,12 +58,17 @@ public class CourseController {
     @PostMapping("/createCourse")
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
         // Ensure the instructor exists before creating the course
+    	logger.error("nah nah nah: ");
         Instructor instructor = instructorService.getInstructorById(course.getInstructor().getId());
         if (instructor != null) {
+        	logger.error("instructor Data: "+ instructor);
             course.setInstructor(instructor);
             Course savedCourse = courseService.createCourse(course);
-            return ResponseEntity.ok(savedCourse);
+            logger.error("savedCourse Data: "+ savedCourse);
+            return ResponseEntity.ok().body(savedCourse);
         } else {
+        	logger.error("instructor Data: "+ instructor);
+        	System.out.println("instructor : " );
             return ResponseEntity.badRequest().build();
         }
     }
