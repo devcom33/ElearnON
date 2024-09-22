@@ -26,7 +26,13 @@ public class CourseService {
     }
 	
 	public Course createCourse(Course course) {
-		return courseRepository.save(course);
+		try {
+			return courseRepository.save(course);
+		}
+		catch (Exception e) {
+			System.out.println("Error : "+ e);
+		}
+		return null;
 	}
 
 }

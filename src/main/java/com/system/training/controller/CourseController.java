@@ -58,7 +58,10 @@ public class CourseController {
     @PostMapping("/createCourse")
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
         // Ensure the instructor exists before creating the course
-    	logger.error("nah nah nah: ");
+    	logger.error("[+] Course Info: " + course);
+    	logger.error("[+] Course Info: " + course);
+    	logger.error("[+] Course Info: " + course);
+
         Instructor instructor = instructorService.getInstructorById(course.getInstructor().getId());
         if (instructor != null) {
         	logger.error("instructor Data: "+ instructor);
