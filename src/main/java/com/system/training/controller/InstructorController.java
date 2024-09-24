@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.system.training.model.AppUser;
 import com.system.training.model.Instructor;
 import com.system.training.service.InstructorService;
+import com.system.training.service.UserService;
 
 
 
@@ -23,6 +25,8 @@ public class InstructorController {
 	
 	@Autowired
 	private InstructorService instructorService;
+	@Autowired
+	private UserService userService;
 	
 	
     @GetMapping("/instructors")
@@ -33,6 +37,10 @@ public class InstructorController {
     @GetMapping("/{id}")
     public Instructor getInstructorById(@PathVariable Long id) {
         return instructorService.getInstructorById(id);
+    }
+    @GetMapping("/user/{username}")
+    public AppUser getInstructorByUsername(@PathVariable String username) {
+        return userService.findUserByUsername(username);
     }
 	
 	
