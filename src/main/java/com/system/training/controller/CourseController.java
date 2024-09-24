@@ -61,8 +61,9 @@ public class CourseController {
     	logger.error("[+] Course Info: " + course);
     	logger.error("[+] Course Info: " + course);
     	logger.error("[+] Course Info: " + course);
+    	logger.error("[+] getId Info: " + instructorService.getInstructorByAppUserId(course.getInstructor().getId()));
 
-        Instructor instructor = instructorService.getInstructorById(course.getInstructor().getId());
+        Instructor instructor = instructorService.getInstructorByAppUserId(course.getInstructor().getId());
         if (instructor != null) {
         	logger.error("instructor Data: "+ instructor);
             course.setInstructor(instructor);

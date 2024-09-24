@@ -29,8 +29,15 @@ public class InstructorService {
     }
     
     public Instructor getInstructorById(Long id) {
-    	return instructorRepository.findById(id).orElse(null);
+        return instructorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Instructor not found with id: " + id));
     }
+
+    public Instructor getInstructorByAppUserId(Long appUserId) {
+        return instructorRepository.findByUserId(appUserId)
+               .orElseThrow(() -> new RuntimeException("Instructor not found with AppUser ID: " + appUserId));
+    }
+
     public List<Instructor> getAllInstructors() {
         return instructorRepository.findAll();
     }
