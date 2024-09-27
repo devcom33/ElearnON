@@ -64,7 +64,7 @@ public class EnrollmentController {
 	        Long studentId = enrollmentRequest.getStudentId();
 	        Long courseId = enrollmentRequest.getCourseId();
 
-	        Student student = studentService.getStudentById(studentId);
+	        Student student = studentService.getStudentByUserId(studentId);
 	        Course course = courseService.getCourseById(courseId);
 
 	        if (student == null || course == null) {
@@ -129,8 +129,5 @@ public class EnrollmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 	}
-
-
-	
 	
 }

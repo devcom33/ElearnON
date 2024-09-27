@@ -53,7 +53,7 @@ public class CourseController {
     
     
     // Create a new course
-    //@PreAuthorize("hasRole('INSTRUCTOR')")
+    @PreAuthorize("hasRole('INSTRUCTOR')")
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/createCourse")
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {

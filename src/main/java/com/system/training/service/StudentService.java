@@ -40,6 +40,12 @@ public class StudentService {
         		orElseThrow(() -> 
         		new StudentNotFoundException("Student with ID " + id + " not found"));
     }
+    public Student getStudentByUserId(Long id) throws StudentNotFoundException{
+        return studentRepository.findByUserId(id).
+        		orElseThrow(() -> 
+        		new StudentNotFoundException("Student with ID " + id + " not found"));
+    }
+    
 
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
