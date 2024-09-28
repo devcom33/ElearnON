@@ -12,8 +12,6 @@ public class InstructorService {
 
     private InstructorRepository instructorRepository;
     
-    
-    
     InstructorService(InstructorRepository instructorRepository){
     	this.instructorRepository = instructorRepository;
     }

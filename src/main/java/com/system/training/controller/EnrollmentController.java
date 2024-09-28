@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -61,15 +62,17 @@ public class EnrollmentController {
 	@PostMapping
 	public ResponseEntity<Enrollement> enroll(@Valid @RequestBody EnrollmentRequest enrollmentRequest) {
 	    try {
+	    	//this student id is who comes from user not id of table student
 	        Long studentId = enrollmentRequest.getStudentId();
 	        Long courseId = enrollmentRequest.getCourseId();
 
 	        Student student = studentService.getStudentByUserId(studentId);
 	        Course course = courseService.getCourseById(courseId);
+	        
 
 	        if (student == null || course == null) {
 	            throw new StudentNotFoundException("Student or Course not found");
-	        } else if (enrollementService.isEnrolled(studentId, courseId)) {
+	        } else if (enrollementService.isEnrolled(student.getId(), courseId)) {
 	            throw new EnrollmentAlreadyExistsException("Enrollment already exists");
 	        }
 
@@ -129,5 +132,12 @@ public class EnrollmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 	}
-	
+	/*
+	@PreAuthorize("hasRole('STUDENT')")
+	@GetMapping("/enrollment/status")
+	public ResponseEntity<Boolean> checkEnrollmentStatus(@RequestParam Long courseId){
+		Long studentId = getCurrentUserId(); 
+	    boolean isEnrolled = enrollementService.isEnrolled(studentId, courseId);
+	    return ResponseEntity.ok(isEnrolled);
+	}*/
 }
