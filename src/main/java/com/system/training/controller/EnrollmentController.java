@@ -132,6 +132,13 @@ public class EnrollmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 	}
+	@PreAuthorize("hasRole('STUDENT')")
+	@GetMapping("/is-enrolled")
+	public ResponseEntity<Void> isEnrolled(@RequestBody EnrollmentRequest enrollRequest){
+		boolean enrolled = enrollementService.isEnrolled(enrollRequest.getStudentId(), enrollRequest.getCourseId());
+		return (enrolled)?(ResponseEntity.ok().build()):null;
+	}
+	
 	/*
 	@PreAuthorize("hasRole('STUDENT')")
 	@GetMapping("/enrollment/status")
