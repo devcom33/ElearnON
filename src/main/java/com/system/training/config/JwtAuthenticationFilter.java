@@ -2,6 +2,7 @@ package com.system.training.config;
 
 import java.io.IOException;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,11 +22,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
-	@Autowired
-    public JwtUtil jwtUtil;
-	@Autowired
-    public UserService userDetailsService;
+    private final JwtUtil jwtUtil;
+    private final UserService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -51,5 +51,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             }
         }
         chain.doFilter(request, response);
+    }
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return null;
     }
 }

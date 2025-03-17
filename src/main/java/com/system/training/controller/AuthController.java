@@ -53,10 +53,8 @@ public class AuthController {
 		} catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}
-		logger.info("[2] User Details: ");
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
-        logger.info("User Details: "+ userDetails);
         AppUser appUser = userService.findUserByUsername(userDetails.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername(), appUser.getRoles());
 
