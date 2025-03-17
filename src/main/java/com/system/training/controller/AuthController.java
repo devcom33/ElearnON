@@ -1,5 +1,6 @@
 package com.system.training.controller;
 
+import com.system.training.config.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +33,14 @@ import lombok.Data;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
 	public final UserService userService;
-	private final UserDetailsService userDetailsService;
+	private final CustomUserDetailsService customUserDetailsService;
 	private final JwtUtil jwtUtil;
 	
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody @Valid AppUser user){
         AppUser savedUser = userService.createUser(user);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(savedUser.getUsername());
+        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(savedUser.getUsername());
         final String jwt = jwtUtil.generateToken(savedUser.getUsername(), savedUser.getRoles());
         
         return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.CREATED);
@@ -53,7 +54,7 @@ public class AuthController {
 		} catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}
-        final UserDetails userDetails = userDetailsService
+        final UserDetails userDetails = customUserDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
         AppUser appUser = userService.findUserByUsername(userDetails.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername(), appUser.getRoles());
