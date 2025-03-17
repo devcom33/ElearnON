@@ -2,6 +2,7 @@ package com.system.training.service;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,19 +14,12 @@ import com.system.training.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class StudentService {
-
-	private StudentRepository studentRepository;
-    
+	private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
 
-    StudentService(StudentRepository studentRepository, PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-        this.studentRepository = studentRepository;
-    }
-    
-    
+
     public Student registerStudent(Student student) {
         Student savedStudent = studentRepository.save(student);
         System.out.println("Saved student: " + savedStudent);

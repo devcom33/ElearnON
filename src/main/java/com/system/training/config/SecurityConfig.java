@@ -3,6 +3,7 @@ package com.system.training.config;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,15 +31,13 @@ import com.system.training.service.UserService;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig{
-	@Autowired
-	private JwtAuthenticationFilter jwtAuthenticationFilter;
-	@Autowired
-    private JwtUtil jwtUtil;
-	@Autowired
-	private UserService userService;
-    
-    
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtUtil jwtUtil;
+	private final UserService userService;
+
+
     @Bean
     UserDetailsService userDetailsService() {
         return new UserService();
@@ -54,6 +53,7 @@ public class SecurityConfig{
             	.requestMatchers("/api/auth/**", "/api/role/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/student/**").hasRole("STUDENT")
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated())
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

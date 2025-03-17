@@ -1,0 +1,11 @@
+services:
+  # Our PostgreSQL database
+  db:
+    image: postgres:latest
+    ports:
+      - "5435:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changemeinprod!
+      POSTGRES_DB: training_db
+      POSTGRES_USER: postgres

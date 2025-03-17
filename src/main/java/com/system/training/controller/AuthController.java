@@ -1,5 +1,6 @@
 package com.system.training.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +28,12 @@ import lombok.Data;
 
 @RequestMapping("/api/auth")
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
-	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-    @Autowired
-    private AuthenticationManager authenticationManager;
-	@Autowired
-	public UserService userService;
-	@Autowired
-	private UserDetailsService userDetailsService;
-	@Autowired
-	private JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+	public final UserService userService;
+	private final UserDetailsService userDetailsService;
+	private final JwtUtil jwtUtil;
 	
 	
 	@PostMapping("/register")

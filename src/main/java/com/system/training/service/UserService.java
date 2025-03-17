@@ -1,22 +1,17 @@
 package com.system.training.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.system.training.controller.EnrollmentController;
 import com.system.training.enums.RoleName;
 import com.system.training.model.AppRole;
 import com.system.training.model.AppUser;
@@ -24,14 +19,11 @@ import com.system.training.repository.AppRoleRepository;
 import com.system.training.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService{
-	private static final Logger logger = LoggerFactory.getLogger(EnrollmentController.class);
-	@Autowired
-	public UserRepository userRepository;
-	@Autowired
-	public AppRoleRepository appRoleRepository;
-    @Autowired
-    public PasswordEncoder passwordEncoder;	
+	private final UserRepository userRepository;
+	private final AppRoleRepository appRoleRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	public AppUser createUser(AppUser appUser) {
 
