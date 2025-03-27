@@ -1,5 +1,6 @@
 package com.system.training.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,9 +15,9 @@ import com.system.training.service.AppRoleService;
 
 @RequestMapping("/api/role")
 @RestController
+@RequiredArgsConstructor
 public class RoleController {
-	@Autowired
-	public AppRoleService appRoleService;
+	private final AppRoleService appRoleService;
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/addRole")

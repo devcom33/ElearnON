@@ -1,5 +1,7 @@
 package com.system.training.config.util;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.system.training.model.AppRole;
@@ -15,18 +20,20 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class JwtUtil {
 
-    public String secret = "HHHHH2020AAAA9829YZIHJDKLDJDUZIP829020220022203030939IEND";
+    @Value("${jwt.secret}")
+    private String secret;
 
     public String generateToken(String username, Set<AppRole> roles) {
         Map<String, Object> claims = new HashMap<>();
         
         List<String> roleNames = roles.stream()
-                .map(AppRole::getAuthority) // Assuming AppRole implements GrantedAuthority
-                .collect(Collectors.toList());
+                .map(AppRole::getAuthority)
+                .toList();
         
         claims.put("roles", roleNames); // Add roles to the claims
         return Jwts.builder()
@@ -34,7 +41,7 @@ public class JwtUtil {
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Token valid for 10 hours
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -47,13 +54,17 @@ public class JwtUtil {
         return extractAllClaims(token).getSubject();
     }
 
-    public String extractRole(String token) {
-        return extractAllClaims(token).get("role", String.class);
+    public List<String> extractRoles(String token) {
+        return extractAllClaims(token).get("roles", List.class);
     }
 
     private Claims extractAllClaims(String token) {
         try {
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
         } catch (ExpiredJwtException e) {
             throw new RuntimeException("Token expired", e);
         }
@@ -61,5 +72,10 @@ public class JwtUtil {
 
     private Boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
+    }
+
+    private Key getSigningKey()
+    {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 }

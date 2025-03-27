@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,18 +18,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Data	
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class AppUser implements UserDetails{
-
-	private static final long serialVersionUID = 1L;
-
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -60,9 +56,6 @@ public class AppUser implements UserDetails{
                 .map(role -> (GrantedAuthority) role)
                 .collect(Collectors.toList());
     }
-    public String getPassword() {
-        return password;
-    }
 
     @Override
     public String getUsername() {
@@ -87,5 +80,10 @@ public class AppUser implements UserDetails{
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 }

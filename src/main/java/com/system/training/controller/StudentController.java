@@ -3,7 +3,13 @@ package com.system.training.controller;
 
 import java.util.List;
 
+import com.system.training.DTO.CreateStudentRequest;
+import com.system.training.DTO.StudentDto;
+import com.system.training.mappers.StudentMapper;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,18 +29,16 @@ import com.system.training.service.StudentService;
 
 @RestController
 @RequestMapping("/api/students")
+@RequiredArgsConstructor
 public class StudentController {
-    @Autowired
-    private StudentService studentService;
-    @Autowired
-    private ProgressService progressService;
+    private final StudentService studentService;
+    private final StudentMapper studentMapper;
+    private final ProgressService progressService;
     
     @PreAuthorize("hasRole('INSTRUCTOR')")
     @GetMapping
     public List<Student> getAllStudents() {
-    	List<Student> students = studentService.getAllStudents();
-        
-        return students;
+        return studentService.getAllStudents();
     }
     
     @PreAuthorize("hasRole('INSTRUCTOR')")
@@ -44,9 +48,10 @@ public class StudentController {
     }
    	
     @PostMapping("/addStudent")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student savedStudent = studentService.registerStudent(student);
-        return ResponseEntity.ok(savedStudent);
+    public ResponseEntity<StudentDto> createStudent(@Valid @RequestBody CreateStudentRequest student) {
+        Student studentEntity = studentMapper.toEntity(student);
+        Student savedStudent = studentService.registerStudent(studentEntity);
+        return new ResponseEntity<>(studentMapper.toStudentDto(savedStudent), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('INSTRUCTOR')")
