@@ -27,16 +27,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService customUserDetailsService;
 
-    // ✅ Explicit constructor
-    @Autowired
-    public SecurityConfig(JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService) {
-        this.jwtUtil = jwtUtil;
-        this.customUserDetailsService = customUserDetailsService;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
