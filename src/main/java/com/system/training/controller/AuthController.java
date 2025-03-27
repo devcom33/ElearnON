@@ -44,6 +44,7 @@ public class AuthController {
 
         return ResponseEntity.ok(authResponse);
 	}
+
 	@CrossOrigin(origins = "http://localhost:5173")
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception
@@ -61,6 +62,4 @@ public class AuthController {
 		AuthResponse authResponse = AuthResponse.builder().jwt(jwt).build();
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
 	}
-
-
 }

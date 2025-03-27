@@ -2,9 +2,7 @@ package com.system.training.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,14 +21,10 @@ import com.system.training.service.InstructorService;
 
 @RestController
 @RequestMapping("/api/course")
+@RequiredArgsConstructor
 public class CourseController {
-    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
-
-    @Autowired
-    private CourseService courseService;
-
-    @Autowired
-    private InstructorService instructorService; // To associate courses with instructors
+    private final CourseService courseService;
+    private final InstructorService instructorService; // To associate courses with instructors
 
     // Get all courses
     @GetMapping
@@ -58,20 +52,13 @@ public class CourseController {
     @PostMapping("/createCourse")
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
         // Ensure the instructor exists before creating the course
-    	logger.error("[+] Course Info: " + course);
-    	logger.error("[+] Course Info: " + course);
-    	logger.error("[+] Course Info: " + course);
-    	logger.error("[+] getId Info: " + instructorService.getInstructorByAppUserId(course.getInstructor().getId()));
 
         Instructor instructor = instructorService.getInstructorByAppUserId(course.getInstructor().getId());
         if (instructor != null) {
-        	logger.error("instructor Data: "+ instructor);
             course.setInstructor(instructor);
             Course savedCourse = courseService.createCourse(course);
-            logger.error("savedCourse Data: "+ savedCourse);
             return ResponseEntity.ok().body(savedCourse);
         } else {
-        	logger.error("instructor Data: "+ instructor);
         	System.out.println("instructor : " );
             return ResponseEntity.badRequest().build();
         }

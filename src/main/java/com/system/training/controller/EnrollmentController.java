@@ -3,9 +3,7 @@ package com.system.training.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -40,24 +37,14 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/enroll")
+@RequiredArgsConstructor
 public class EnrollmentController {
-    private static final Logger logger = LoggerFactory.getLogger(EnrollmentController.class);
-	@Autowired
-	public EnrollmentService enrollementService;
-	
-	@Autowired
-	public StudentService studentService;
-	
-	@Autowired
-	public CourseService courseService;
-	
-	@Autowired
-	public ProgressService progressService;
-	
-	@Autowired
-	public LessonService lessonService;
-	
-	
+	private final EnrollmentService enrollementService;
+	private final StudentService studentService;
+	private final CourseService courseService;
+	private final ProgressService progressService;
+	private final LessonService lessonService;
+
 	@PreAuthorize("hasRole('STUDENT')")
 	@PostMapping
 	public ResponseEntity<Enrollement> enroll(@Valid @RequestBody EnrollmentRequest enrollmentRequest) {
@@ -68,7 +55,6 @@ public class EnrollmentController {
 
 	        Student student = studentService.getStudentByUserId(studentId);
 	        Course course = courseService.getCourseById(courseId);
-	        
 
 	        if (student == null || course == null) {
 	            throw new StudentNotFoundException("Student or Course not found");
@@ -97,13 +83,10 @@ public class EnrollmentController {
 	                .toUri();
 	        return ResponseEntity.created(location).body(savedEnroll);
 	    } catch (StudentNotFoundException | CourseNotFoundException e) {
-	        logger.error("Enrollment error: {}", e.getMessage());
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	    } catch (EnrollmentAlreadyExistsException e) {
-	        logger.error("Enrollment error: {}", e.getMessage());
 	        return ResponseEntity.status(HttpStatus.CONFLICT).body(null); //409
 	    } catch (Exception e) {
-	        logger.error("Unexpected error: {}", e.getMessage());
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	    }
 	}
@@ -122,13 +105,10 @@ public class EnrollmentController {
         	enrollementService.updateEnrollementState(updateRequest.getEnrollmentId(), updateRequest.getNewState());
             return ResponseEntity.ok().build();
         } catch (EnrollmentNotFoundException e) {
-            logger.error("Enrollment not found: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (InvalidStateTransitionException e) {
-            logger.error("Invalid state transition: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
-            logger.error("Unexpected error: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 	}

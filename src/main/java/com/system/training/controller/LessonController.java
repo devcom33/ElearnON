@@ -3,6 +3,7 @@ package com.system.training.controller;
 import java.net.URI;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,16 +27,11 @@ import jakarta.validation.Valid;
 
 @RequestMapping("/api/lesson")
 @RestController
+@RequiredArgsConstructor
 public class LessonController {
-
 	private final LessonService lessonService;
 	private final CourseService courseService;
-	
-	public LessonController(LessonService lessonService, CourseService courseService)
-	{
-		this.lessonService = lessonService;
-		this.courseService = courseService;
-	}
+
 	
 	@PreAuthorize("hasRole('INSTRUCTOR')")
 	@PostMapping

@@ -2,7 +2,7 @@ package com.system.training.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,16 +17,12 @@ import com.system.training.model.Instructor;
 import com.system.training.service.InstructorService;
 import com.system.training.service.UserService;
 
-
-
 @RestController
 @RequestMapping("/api/instructor")
+@RequiredArgsConstructor
 public class InstructorController {
-	
-	@Autowired
-	private InstructorService instructorService;
-	@Autowired
-	private UserService userService;
+	private final InstructorService instructorService;
+	private final UserService userService;
 	
 	
     @GetMapping("/instructors")

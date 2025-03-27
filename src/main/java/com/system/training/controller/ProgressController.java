@@ -2,6 +2,7 @@ package com.system.training.controller;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +14,9 @@ import com.system.training.service.ProgressService;
 
 @RestController
 @RequestMapping("/api/progress")
+@RequiredArgsConstructor
 public class ProgressController {
-	public ProgressService progressService;
-	
-	public ProgressController(ProgressService progressService) {
-		this.progressService = progressService;
-	}
-	
+	private final ProgressService progressService;
 	
 	@GetMapping
 	public ResponseEntity<List<Progress>> getProgress(){
