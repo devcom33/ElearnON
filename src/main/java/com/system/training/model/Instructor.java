@@ -30,15 +30,12 @@ public class Instructor {
     private AppUser user;  // Reference to AppUser
 
     @Column(nullable = false)
-    @JsonProperty("department")
     private String department;
 
     @Column(nullable = false)
-    @JsonProperty("language_spoken")
     private String languageSpoken;
 
     @Column(nullable = false)
-    @JsonProperty("gender")
     private String gender;
 }
 

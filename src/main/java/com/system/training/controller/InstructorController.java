@@ -2,7 +2,10 @@ package com.system.training.controller;
 
 import java.util.List;
 
+import com.system.training.DTO.InstructorRequest;
+import com.system.training.mappers.InstructorMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,7 @@ import com.system.training.service.UserService;
 public class InstructorController {
 	private final InstructorService instructorService;
 	private final UserService userService;
+    private final InstructorMapper instructorMapper;
 	
 	
     @GetMapping("/instructors")
@@ -34,6 +38,7 @@ public class InstructorController {
     public Instructor getInstructorById(@PathVariable Long id) {
         return instructorService.getInstructorById(id);
     }
+
     @GetMapping("/user/{username}")
     public AppUser getInstructorByUsername(@PathVariable String username) {
         return userService.findUserByUsername(username);
@@ -41,10 +46,11 @@ public class InstructorController {
 	
 	
 	@PostMapping("/register")
-	public ResponseEntity<Instructor> createInstructor(@RequestBody Instructor instructor)
+	public ResponseEntity<Instructor> createInstructor(@RequestBody InstructorRequest instructorRequest)
 	{
+        Instructor instructor = instructorMapper.toEntity(instructorRequest);
 		Instructor savedInstructor = instructorService.createInstructor(instructor);
-		return ResponseEntity.ok(savedInstructor);
+		return new ResponseEntity<>(savedInstructor, HttpStatus.CREATED);
 	}
 	
 	
