@@ -105,7 +105,7 @@ Authorization: Bearer <your-token>
 | `POST /api/auth/register` | Register new user | Public |
 | `POST /api/auth/login` | Authenticate & get JWT | Public |
 | `GET /api/courses` | Get all courses | Public |
-| `POST /api/courses` | Create a new course | Instructor/Admin |
+| `POST /api/courses` | Create a new course | Instructor |
 | `POST /api/enrollments` | Enroll a student *(In Progress ⏳)* | Student |
 | `GET /api/progress` | Get user progress *(In Progress ⏳)* | Student |
 | `POST /api/reviews` | Add course review *(Not Started 🚧)* | Student |
