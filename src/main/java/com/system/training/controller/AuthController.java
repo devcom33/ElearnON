@@ -1,8 +1,10 @@
 package com.system.training.controller;
 
 import com.system.training.DTO.AuthResponse;
-import com.system.training.DTO.AuthenticationRequest;
+import com.system.training.DTO.LoginRequest;
+import com.system.training.DTO.RegisterRequest;
 import com.system.training.config.CustomUserDetailsService;
+import com.system.training.mappers.AuthMapper;
 import com.system.training.service.UserService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -32,13 +34,15 @@ public class AuthController {
 	public final UserService userService;
 	private final CustomUserDetailsService customUserDetailsService;
 	private final JwtUtil jwtUtil;
+	private final AuthMapper authMapper;
 	
 	
 	@PostMapping("/register")
-	public ResponseEntity<AuthResponse> register(@RequestBody @Valid AppUser user){
+	public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterRequest userRequest) {
+		AppUser user = authMapper.toEntity(userRequest);
         AppUser savedUser = userService.createUser(user);
-        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(savedUser.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername(), savedUser.getRoles());
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(savedUser.getUsername());
+		String jwt = jwtUtil.generateToken(userDetails.getUsername(), savedUser.getRoles());
 
         AuthResponse authResponse = AuthResponse.builder().jwt(jwt).build();
 
@@ -47,17 +51,17 @@ public class AuthController {
 
 	@CrossOrigin(origins = "http://localhost:5173")
 	@PostMapping("/login")
-	public ResponseEntity<AuthResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception
+	public ResponseEntity<AuthResponse> createAuthenticationToken(@RequestBody @Valid LoginRequest loginRequest) throws Exception
 	{
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 		} catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}
-        final UserDetails userDetails = customUserDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
+		UserDetails userDetails = customUserDetailsService
+                .loadUserByUsername(loginRequest.getUsername());
         AppUser appUser = userService.findUserByUsername(userDetails.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername(), appUser.getRoles());
+		String jwt = jwtUtil.generateToken(userDetails.getUsername(), appUser.getRoles());
 
 		AuthResponse authResponse = AuthResponse.builder().jwt(jwt).build();
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
